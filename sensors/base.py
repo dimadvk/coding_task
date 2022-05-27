@@ -69,13 +69,25 @@ class AbstractSensor(object):
             raise SensorError(msg)
 
         self._thread = None
-        # todo: join()
         logger.info("Data message stops being sent")
 
     def _transmit_data(self):
         while not self._should_stop.wait(1.0 / self._rate_hz):
-            self._send_message()
+            data = self._prepare_data()
+            self._send_message(data)
 
     @abc.abstractmethod
-    def _send_message(self):
-        """Send measured data."""
+    def _send_message(self, data):
+        """Send measured data.
+
+        Args:
+            data (dict): measured data prepared for sending
+        """
+
+    @abc.abstractmethod
+    def _prepare_data(self):
+        """Prepare measured data.
+
+        Returns:
+            dict: measured data prepared for sending
+        """

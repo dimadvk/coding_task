@@ -10,6 +10,9 @@ logger = logging.getLogger(__name__)
 class DistanceSensor(AbstractSensor):
     """Sensor device for measuring distance."""
 
-    def _send_message(self):
+    def _send_message(self, data):
+        logger.info("send data: %s" % data)
+
+    def _prepare_data(self):
         distance = random.random() * 100
-        logger.info({"distance": distance})
+        return {"distance": distance}
